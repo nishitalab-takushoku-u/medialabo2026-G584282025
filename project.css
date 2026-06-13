@@ -1,0 +1,15 @@
+h1 {
+    border-bottom: 5px solid black;
+}
+h2 {
+    border-bottom: 10px dotted gray;
+}
+div  {
+    border: 5px solid rgb(0, 0, 139);
+    background-color: rgba(156, 158, 156, 0.27);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+li {
+    list-style-type: none;
+}
