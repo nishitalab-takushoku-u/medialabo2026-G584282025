@@ -8,18 +8,41 @@
     <script src="tv-program.js" defer></script>
   </head>
   <body>
+    <h1>NHK の番組表</h1>
+     <label for="genreSelect">ジャンル</label>
+      <select name="genreSelect" id="genreSelect">
+        <option value="all">全て</option>
+        <option value="0000">ニュース・報道</option>
+        <option value="0100">スポーツ</option>
+        <option value="0205">情報・ワイドショー</option>
+        <option value="0300">ドラマ</option>
+        <option value="0409">音楽</option>
+        <option value="0502">バラエティ</option>
+        <option value="0600">映画</option>
+        <option value="0700">アニメ</option>
+        <option value="0800">ドキュメンタリー・教養</option>
+        <option value="0903">劇場・公演</option>
+        <option value="1000">趣味・教育</option>
+        <option value="1100">福祉</option>        
+      </select>
+    <h3>チャンネル</h3>
+    <input type="checkbox" name="channel" id="g1" value="g1">
+    <label for="g1">NHK総合1</label>
+    <input type="checkbox" name="channel" id="e1" value="e1">
+    <label for="e1">Eテレ1</label><br><br>
+    <button id="kensaku">検索</button>
     <h1>番組表の検索結果</h1>
-    <p>（検索結果は2件） </p>
-    <div>
-      <h2>検索結果1件目</h2>
+    <p>（検索結果は<span date="max">-</span>件） </p>
+    <div class="0409 sougou">
+      <h2>検索結果<span date="count">-</span>件目</h2>
       <h3>みんなうた「ごっつぉさま」／「超変身！ミネラルフォーマーズ」</h3>
       <h4>NHK総合<br>2022年3月4日 04:35:00~04:40:00</h4>
       <ul>
         <li>「ごっつぉさま」うた：須貝智郎／「超変身！ミネラルフォーマーズ」うた：鬼龍院翔ｆｒｏｍゴールデンボンバー</li>
       </ul>
     </div>
-    <div>
-      <h2>検索結果2件目</h2>
+    <div class="0502 sougou">
+      <h2>検索結果<span date="count">-</span>件目</h2>
       <h3>パラスポーツ×アニメ「アニ×パラ」▽パラアルペンスキーテーマ曲江口寿史×ＡＣＣ</h3>
       <h4>NHK総合<br>2022年3月4日 23:05:00~23:10:00</h4>
       <ul>

@@ -17,6 +17,30 @@ function print(data) {
 
 }
 
+function log() {
+let checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  let cbC = 0;
+  let IdList = '';
+  for (let i = 0; i < checkboxes.length; i += 1) {
+    let Box = checkboxes[i];
+    if (Box.checked) {
+      cbC += 1;
+      if (IdList != '') {
+        IdList = IdList + ', ';
+      }
+      IdList = IdList + Box.id;
+    }
+  }
+  if (cbC == 0) {
+    return;
+  }
+  let genreSelect = document.querySelector('#genreSelect');
+  let selGenre = genreSelect.value;
+  console.log('ジャンル:' + selGenre);
+  console.log('チャンネル:' + IdList);
+}
+let l = document.querySelector('button#kensaku');
+l.addEventListener('click', log);
 // 課題5-1 の関数 printDom() はここに記述すること
 function printDom(data) {
 
