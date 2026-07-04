@@ -4,7 +4,7 @@ h1 {
 h2 {
     border-bottom: 10px dotted gray;
 }
-div  {
+.program{
     border: 5px solid rgb(0, 0, 139);
     background-color: rgba(156, 158, 156, 0.27);
     padding: 10px;

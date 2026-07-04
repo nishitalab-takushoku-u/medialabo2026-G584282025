@@ -16,3 +16,20 @@ let gakka = [
 
 //////////////// ここから下にプログラムを書きたそう!
 
+function hyouji() {
+	let l = document.createElement('ul');
+	let u = document.querySelector('h2#addr');
+	u.insertAdjacentElement('afterend',l);
+	l.textContent = campus.address;
+
+	let m = document.createElement('ul');
+	let p = document.querySelector('h2#dept');
+	p.insertAdjacentElement('afterend',m);
+	for(let r of gakka) {
+		let n = document.createElement('li')
+		m.insertAdjacentElement('beforeend',n);
+		n.textContent = r.name;
+	}
+}
+let b = document.querySelector('button#show');
+b.addEventListener('click', hyouji);

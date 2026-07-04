@@ -43,7 +43,129 @@ let l = document.querySelector('button#kensaku');
 l.addEventListener('click', log);
 // 課題5-1 の関数 printDom() はここに記述すること
 function printDom(data) {
+  let oldResult = document.querySelector('#result');
+  if (oldResult) {
+    oldResult.remove();
+  }
 
+  let div = document.createElement('div');
+  let body = document.querySelector('body');
+  body.insertAdjacentElement('beforeend',div);
+  div.setAttribute('id','result');
+
+  let kensu = 0;
+  let genreSelect2 = document.querySelector('#genreSelect');
+  let selGenre2 = genreSelect2.value;
+  let checkboxesG1 = document.querySelector('#g1');
+  let checkboxesE1 = document.querySelector('#e1');
+
+
+  if(checkboxesG1.checked) {
+    if (data.list.g1 != undefined) {
+      for (let i = 0; i < data.list.g1.length; i = i + 1) {
+        let g = data.list.g1[i];
+
+        let genreMatch = false;
+        if (selGenre2 == "all") {
+          genreMatch = true;
+        } else {
+          for (let j = 0; j < g.genres.length; j = j + 1) {
+            if (g.genres[j] == selGenre2) {
+              genreMatch = true;
+            }
+          }
+        }
+        if (genreMatch) {
+          kensu = kensu + 1;
+
+          let programDiv = document.createElement('div');
+          programDiv.setAttribute('class', 'program');
+
+          let kenme = document.createElement('h2');
+          kenme.textContent = "検索結果" + kensu + "件目";
+          programDiv.insertAdjacentElement('beforeend', kenme);
+
+          let Bangumimei = document.createElement('h3');
+          Bangumimei.textContent = g.title;
+          programDiv.insertAdjacentElement('beforeend', Bangumimei);
+
+          let startRaw = g.start_time.replace('T', ' ');
+          let endRaw = g.end_time.replace('T', ' ');
+          let kaisi = startRaw.substring(0, 19);
+          let syuuryou = endRaw.substring(11, 19);
+          let jikan = document.createElement('h4');
+          jikan.textContent = g.service.name + " " + kaisi + " ~ " + syuuryou;
+          programDiv.insertAdjacentElement('beforeend', jikan);
+
+          let sonota = document.createElement('ul');
+          let setumei = document.createElement('li');
+          setumei.textContent = g.content;
+          sonota.insertAdjacentElement('beforeend', setumei);
+          if (g.act != "") {
+            let syutsuyen = document.createElement('li');
+            syutsuyen.textContent = "出演者: " + g.act;
+            sonota.insertAdjacentElement('beforeend', syutsuyen);
+          }
+          programDiv.insertAdjacentElement('beforeend', sonota);
+          div.insertAdjacentElement('beforeend', programDiv);
+        }
+      }
+    }
+  }
+  if(checkboxesE1.checked) {
+    if (data.list.e1 != undefined) {
+      for (let i = 0; i < data.list.e1.length; i = i + 1) {
+        let e = data.list.e1[i];
+
+        let genreMatch = false;
+        if (selGenre2 == "all") {
+          genreMatch = true;
+        } else {
+          for (let j = 0; j < e.genres.length; j = j + 1) {
+            if (e.genres[j] == selGenre2) {
+              genreMatch = true;
+            }
+          }
+        }
+        if (genreMatch) {
+          kensu = kensu + 1;
+
+          let programDiv = document.createElement('div');
+          programDiv.setAttribute('class', 'program');
+
+          let kenme = document.createElement('h2');
+          kenme.textContent = "検索結果" + kensu + "件目";
+          programDiv.insertAdjacentElement('beforeend', kenme);
+
+          let Bangumimei = document.createElement('h3');
+          Bangumimei.textContent = e.title;
+          programDiv.insertAdjacentElement('beforeend', Bangumimei);
+
+          let startRaw = e.start_time.replace('T', ' ');
+          let endRaw = e.end_time.replace('T', ' ');
+          let kaisi = startRaw.substring(0, 19);
+          let syuuryou = endRaw.substring(11, 19);
+          let jikan = document.createElement('h4');
+          jikan.textContent = e.service.name + " " + kaisi + " ~ " + syuuryou;
+          programDiv.insertAdjacentElement('beforeend', jikan);
+
+          let sonota = document.createElement('ul');
+          let setumei = document.createElement('li');
+          setumei.textContent = e.content;
+          sonota.insertAdjacentElement('beforeend', setumei);
+          if (e.act != "") {
+            let syutsuyen = document.createElement('li');
+            syutsuyen.textContent = "出演者: " + e.act;
+            sonota.insertAdjacentElement('beforeend', syutsuyen);
+          }
+          programDiv.insertAdjacentElement('beforeend', sonota);
+          div.insertAdjacentElement('beforeend', programDiv);
+        }
+      }
+    }
+  }
+  let span = document.querySelector('span#kensu');
+  span.textContent = kensu;
 }
 
 // 課題6-1 のイベントハンドラ登録処理は以下に記述
