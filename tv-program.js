@@ -1,4 +1,3 @@
-
 // 課題3-2 のプログラムはこの関数の中に記述すること
 function print(data) {
   let i = 1;
@@ -59,7 +58,6 @@ function printDom(data) {
   let checkboxesG1 = document.querySelector('#g1');
   let checkboxesE1 = document.querySelector('#e1');
 
-
   if(checkboxesG1.checked) {
     if (data.list.g1 != undefined) {
       for (let i = 0; i < data.list.g1.length; i = i + 1) {
@@ -76,7 +74,7 @@ function printDom(data) {
           }
         }
         if (genreMatch) {
-          kensu = kensu + 1;
+          kensu += 1;
 
           let programDiv = document.createElement('div');
           programDiv.setAttribute('class', 'program');
@@ -91,8 +89,8 @@ function printDom(data) {
 
           let startRaw = g.start_time.replace('T', ' ');
           let endRaw = g.end_time.replace('T', ' ');
-          let kaisi = startRaw.substring(0, 19);
-          let syuuryou = endRaw.substring(11, 19);
+          let kaisi = startRaw.substring(0, 16);
+          let syuuryou = endRaw.substring(11, 16);
           let jikan = document.createElement('h4');
           jikan.textContent = g.service.name + " " + kaisi + " ~ " + syuuryou;
           programDiv.insertAdjacentElement('beforeend', jikan);
@@ -128,7 +126,7 @@ function printDom(data) {
           }
         }
         if (genreMatch) {
-          kensu = kensu + 1;
+          kensu += 1;
 
           let programDiv = document.createElement('div');
           programDiv.setAttribute('class', 'program');
@@ -143,8 +141,8 @@ function printDom(data) {
 
           let startRaw = e.start_time.replace('T', ' ');
           let endRaw = e.end_time.replace('T', ' ');
-          let kaisi = startRaw.substring(0, 19);
-          let syuuryou = endRaw.substring(11, 19);
+          let kaisi = startRaw.substring(0, 16);
+          let syuuryou = endRaw.substring(11, 16);
           let jikan = document.createElement('h4');
           jikan.textContent = e.service.name + " " + kaisi + " ~ " + syuuryou;
           programDiv.insertAdjacentElement('beforeend', jikan);
@@ -170,17 +168,72 @@ function printDom(data) {
 
 // 課題6-1 のイベントハンドラ登録処理は以下に記述
 
-
-
+let b = document.querySelector('button#kensaku');
+b.addEventListener('click', sendRequest);
 
 // 課題6-1 のイベントハンドラ sendRequest() の定義
-function sendRequest() {
+let MatometaData = { list: { g1: [], e1: [] } }; 
+let GenresNoKazu = 0;
+let endCount = 0;
 
+function sendRequest() {
+  let genre = document.querySelector('#genreSelect').value;
+  let G1Checked = document.querySelector('#g1').checked;
+  let E1Checked = document.querySelector('#e1').checked;
+  MatometaData = { list: { g1: [], e1: [] } };
+  const allGenres = ["0000", "0100", "0205", "0300", "0409", "0502", "0600", "0700", "0800", "0903", "1000", "1100"];
+  let NowGenres;
+  if (genre === "all") {
+    NowGenres = allGenres; 
+  } else {
+    NowGenres = [genre]; 
+  }
+  GenresNoKazu = 0;
+  endCount = 0;
+  if (G1Checked) {
+    GenresNoKazu += NowGenres.length;
+  }
+  if (E1Checked) {
+    GenresNoKazu += NowGenres.length;
+  }
+
+  for (let i = 0; i < NowGenres.length; i = i + 1) {
+  let gCode = NowGenres[i];
+    if (G1Checked) {
+      let urlG1 = 'https://www.nishita-lab.org/web-contents/jsons/nhk/g1-'+ gCode +'-j.json';
+      axios.get(urlG1)
+         .then(showResult)
+          .catch(showError)
+          .then(finish);
+    }
+
+    if (E1Checked) {
+      let urlE1 = 'https://www.nishita-lab.org/web-contents/jsons/nhk/e1-'+ gCode +'-j.json';
+      axios.get(urlE1)
+          .then(showResult)
+          .catch(showError)
+          .then(finish);
+    }
+  }
 }
 
 // 課題6-1: 通信が成功した時の処理は以下に記述
 function showResult(resp) {
+  let data = resp.data;
+  if (typeof data === 'string') {
+    data = JSON.parse(data);
+  }
+  if (data.list && data.list.g1) {
+    MatometaData.list.g1 = MatometaData.list.g1.concat(data.list.g1);
+  }
+  if (data.list && data.list.e1) {
+    MatometaData.list.e1 = MatometaData.list.e1.concat(data.list.e1);
+  }
+  endCount += 1;
 
+  if (endCount == GenresNoKazu) {
+    printDom(MatometaData);
+  }
 }
 
 // 課題6-1: 通信エラーが発生した時の処理
@@ -197,84 +250,3 @@ function finish() {
 // 以下はテレビ番組表のデータサンプル
 // 注意: 第5回までは以下を変更しないこと！
 // 注意2: 課題6-1 で以下をすべて削除すること
-let data = {
-  "list": {
-    "g1": [
-      {
-        "id": "2022030428673",
-        "event_id": "28673",
-        "start_time": "2022-03-04T04:35:00+09:00",
-        "end_time": "2022-03-04T04:40:00+09:00",
-        "area": {
-          "id": "130",
-          "name": "東京"
-        },
-        "service": {
-          "id": "g1",
-          "name": "ＮＨＫ総合１",
-          "logo_s": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-100x50.png",
-            "width": "100",
-            "height": "50"
-          },
-          "logo_m": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-200x100.png",
-            "width": "200",
-            "height": "100"
-          },
-          "logo_l": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-200x200.png",
-            "width": "200",
-            "height": "200"
-          }
-        },
-        "title": "みんなのうた「ごっつぉさま」／「超変身！ミネラルフォーマーズ」",
-        "subtitle": "「ごっつぉさま」うた：須貝智郎／「超変身！ミネラルフォーマーズ」うた：鬼龍院翔ｆｒｏｍゴールデンボンバー",
-        "content": "「ごっつぉさま」うた：須貝智郎／「超変身！ミネラルフォーマーズ」うた：鬼龍院翔ｆｒｏｍゴールデンボンバー",
-        "act": "",
-        "genres": [
-          "0409",
-          "0700",
-          "0504"
-        ]
-      },
-      {
-        "id": "2022030427069",
-        "event_id": "27069",
-        "start_time": "2022-03-04T23:05:00+09:00",
-        "end_time": "2022-03-04T23:10:00+09:00",
-        "area": {
-          "id": "130",
-          "name": "東京"
-        },
-        "service": {
-          "id": "g1",
-          "name": "ＮＨＫ総合１",
-          "logo_s": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-100x50.png",
-            "width": "100",
-            "height": "50"
-          },
-          "logo_m": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-200x100.png",
-            "width": "200",
-            "height": "100"
-          },
-          "logo_l": {
-            "url": "//www.nhk.or.jp/common/img/media/gtv-200x200.png",
-            "width": "200",
-            "height": "200"
-          }
-        },
-        "title": "パラスポーツ×アニメ「アニ×パラ」▽パラアルペンスキーテーマ曲江口寿史×ＡＣＣ",
-        "subtitle": "パラスポーツの魅力をアニメで伝える番組。高速滑走に挑む精神力が試されるパラアルペンスキーを描く。キャラ原案：江口寿史／曲：Ａｗｅｓｏｍｅ　Ｃｉｔｙ　Ｃｌｕｂ",
-        "content": "パラスポーツの魅力をアニメで伝えるプロジェクトの第１３弾。圧倒的なスピードに挑む「パラアルペンスキー」の世界を江口寿史原案の魅力的なキャラクターで描く。平昌パラリンピック金メダリストの村岡桃佳選手への取材から生まれた主人公・桃は、スピードへの恐怖を克服していく。その壁を越えた先にあるものとは…　テーマ曲　♪「Ｏｎ　Ｙｏｕｒ　Ｍａｒｋ」はＡｗｅｓｏｍｅ　Ｃｉｔｙ　Ｃｌｕｂが手掛けた。",
-        "act": "【声】松本まりか，【出演】Ａｗｅｓｏｍｅ　Ｃｉｔｙ　Ｃｌｕｂ，【監督】西村一彦，【脚本】加納新太，【原案】江口寿史",
-        "genres": [
-          "0700"
-        ]
-      }
-    ]
-  }
-};
-
